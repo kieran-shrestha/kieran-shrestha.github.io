@@ -1,0 +1,47 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="table-responsive">
+  <table class="table table-bordered table-dark table-striped" id="presentationTable">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Type</th>
+        <th>Location</th>
+        <th>Date</th>
+        <th>Event</th>
+        <th>Award</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data will be loaded here -->
+    </tbody>
+  </table>
+</div>
+
+<script>
+  const url = 'https://raw.githubusercontent.com/kieran-shrestha/scholar_list/refs/heads/main/participation.json'; // Replace with your actual JSON URL
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const tbody = document.querySelector('#presentationTable tbody');
+      data.forEach(entry => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${entry.title}</td>
+          <td>${entry.type}</td>
+          <td>${entry.location}</td>
+          <td>${entry.date}</td>
+          <td>${entry.event}</td>
+          <td>${entry.award || '-'}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    })
+    .catch(error => {
+      console.error('Error loading JSON:', error);
+      document.querySelector('#presentationTable tbody').innerHTML = `
+        <tr><td colspan="6" class="text-danger text-center">Failed to load data.</td></tr>
+      `;
+    });
+</script>
